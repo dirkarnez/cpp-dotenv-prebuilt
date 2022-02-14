@@ -17,7 +17,7 @@ jobs:
 
       - name: cmake cpp-dotenv
         shell: cmd
-        run: cd cpp-dotenv && cmake.exe -G"MinGW Makefiles" -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX="build/cpp-dotenv" -B./build
+        run: cd cpp-dotenv && cmake.exe -G"MinGW Makefiles" -DBUILD_SHARED_LIBS=OFF -B./build
       
       - name: mingw build 
         shell: cmd
@@ -27,12 +27,12 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: "zip"
-          directory: "cpp-dotenv/build/cpp-dotenv"
+          directory: "cpp-dotenv/build"
           filename: "${{ env.mingwTargetZip }}"
           
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "cpp-dotenv/build/cpp-dotenv/${{ env.mingwTargetZip }}"
+          artifacts: "cpp-dotenv/build/${{ env.mingwTargetZip }}"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
