@@ -13,7 +13,7 @@ jobs:
       mingwTargetZip: cpp-dotenv-${{ github.ref_name }}-mingw.zip
     steps:
       - name: git clone cpp-dotenv
-        run: git clone --branch v1.0.0-alpha https://github.com/adeharo9/cpp-dotenv.git
+        run: git clone --branch v0.2.0 https://github.com/adeharo9/cpp-dotenv.git
 
       - name: cmake cpp-dotenv
         shell: cmd
