@@ -21,7 +21,7 @@ jobs:
       
       - name: mingw build 
         shell: cmd
-        run: cd cpp-dotenv\build && mingw32-make install
+        run: cd cpp-dotenv\build && mingw32-make
         
       - name: Archive Release
         uses: thedoctor0/zip-release@master
