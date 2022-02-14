@@ -1,0 +1,38 @@
+name: cpp-dotenv-prebuilt-release-actions-workflow
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: windows-latest
+    env:
+      mingwTargetZip: cpp-dotenv-${{ github.ref_name }}-mingw.zip
+    steps:
+      - name: git clone cpp-dotenv
+        run: git clone --branch v1.0.0-alpha https://github.com/adeharo9/cpp-dotenv.git
+
+      - name: cmake cpp-dotenv
+        shell: cmd
+        run: cd cpp-dotenv && cmake.exe -G"MinGW Makefiles" -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX="build/cpp-dotenv" -B./build
+      
+      - name: mingw build 
+        shell: cmd
+        run: cd cpp-dotenv\build && mingw32-make install
+        
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: "zip"
+          directory: "cpp-dotenv/build/cpp-dotenv"
+          filename: "${{ env.mingwTargetZip }}"
+          
+      - name: Release prebuilt
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "cpp-dotenv/build/cpp-dotenv/${{ env.mingwTargetZip }}"
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
